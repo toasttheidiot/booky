@@ -1,20 +1,18 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextGen | Evolution is Coming</title>
+    <title>NextGen</title>
     <style>
         /* Base Reset & Variables */
         :root {
-            --bg-primary: #0a0a0c;
-            --bg-secondary: #121216;
-            --bg-tertiary: #1a1a22;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --border: #222222;
+            --text: #ffffff;
+            --text-muted: #777777;
         }
 
         * {
@@ -25,22 +23,10 @@
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
             line-height: 1.6;
-        }
-
-        /* Ambient Background Glows */
-        .ambient-glow {
-            position: fixed;
-            top: -20%;
-            left: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            z-index: 0;
-            pointer-events: none;
         }
 
         /* Navigation */
@@ -48,157 +34,102 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 4rem;
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(10, 10, 12, 0.8);
-            backdrop-filter: blur(12px);
+            padding: 2rem 4rem;
+            border-bottom: 1px solid var(--border);
             position: fixed;
             width: 100%;
             top: 0;
+            background: var(--bg);
             z-index: 10;
         }
 
         .logo {
-            font-weight: 800;
-            font-size: 1.4rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(45deg, #fff, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 3rem;
             list-style: none;
         }
 
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
         }
 
         .nav-links a:hover {
-            color: var(--text-main);
-        }
-
-        .nav-btn {
-            background: var(--text-main);
-            color: var(--bg-primary);
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-1px);
-            opacity: 0.9;
+            color: var(--text);
         }
 
         /* Hero Section */
         main {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 12rem 2rem 6rem 2rem;
-            position: relative;
-            z-index: 1;
+            padding: 14rem 2rem 8rem 2rem;
         }
 
         .hero {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 6rem auto;
-        }
-
-        .badge {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--accent);
-            display: inline-block;
-            margin-bottom: 1.5rem;
+            max-width: 700px;
+            margin-bottom: 7rem;
         }
 
         h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to bottom, #ffffff 40%, #a3a3a3 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 2rem;
         }
 
         .hero-desc {
             color: var(--text-muted);
-            font-size: 1.2rem;
-            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 300;
+            max-width: 550px;
         }
 
-        /* Bento Grid Features */
+        /* Minimalist Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2.5rem;
-            transition: border-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: rgba(99, 102, 241, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .card-large {
-            grid-column: span 2;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            border-top: 1px solid var(--border);
+            padding-top: 3rem;
         }
 
         .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.3px;
         }
 
         .card p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            font-weight: 300;
         }
 
-        /* Modal / Popup Styles */
+        /* Overlay / Popup */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 5, 7, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.3s ease;
         }
 
         .modal-overlay.active {
@@ -207,20 +138,12 @@
         }
 
         .modal {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: var(--surface);
+            border: 1px solid var(--border);
             width: 90%;
-            max-width: 500px;
+            max-width: 440px;
             padding: 3rem;
-            border-radius: 16px;
             position: relative;
-            transform: scale(0.95) translateY(10px);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-overlay.active .modal {
-            transform: scale(1) translateY(0);
         }
 
         .close-btn {
@@ -231,129 +154,113 @@
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 1.2rem;
-            transition: color 0.2s;
+            font-size: 1.5rem;
         }
 
         .close-btn:hover {
-            color: var(--text-main);
-        }
-
-        .modal-tag {
-            color: var(--accent);
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 0.5rem;
-            display: block;
+            color: var(--text);
         }
 
         .modal h2 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -1px;
+            font-size: 1.8rem;
+            font-weight: 400;
             margin-bottom: 1rem;
+            letter-spacing: -0.5px;
         }
 
         .modal p {
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-bottom: 2rem;
+            font-weight: 300;
         }
 
-        /* Form Controls */
+        /* Forms */
         .form-group {
             display: flex;
-            gap: 0.5rem;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         input[type="email"] {
-            flex: 1;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
-            color: var(--text-main);
-            font-size: 0.95rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.3s;
         }
 
         input[type="email"]:focus {
-            border-color: var(--accent);
+            border-color: var(--text);
         }
 
         .submit-btn {
-            background: var(--accent);
-            color: white;
+            background: var(--text);
+            color: var(--bg);
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
+            padding: 0.75rem 1rem;
             font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: background 0.2s;
         }
 
         .submit-btn:hover {
-            opacity: 0.9;
+            background: #e5e5e5;
         }
 
         /* Responsive Design */
-        @media (max-width: 900px) {
+        @media (max-width: 800px) {
             .grid {
                 grid-template-columns: 1fr;
-            }
-            .card-large {
-                grid-column: span 1;
+                gap: 2rem;
             }
             nav {
                 padding: 1.5rem 2rem;
             }
+            .nav-links {
+                display: none;
+            }
             h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-glow"></div>
-
     <nav>
         <div class="logo">NEXTGEN</div>
         <ul class="nav-links">
             <li><a href="#" class="trigger-popup">Platform</a></li>
             <li><a href="#" class="trigger-popup">Ecosystem</a></li>
-            <li><a href="#" class="trigger-popup">Enterprise</a></li>
+            <li><a href="#" class="trigger-popup">Access</a></li>
         </ul>
-        <button class="nav-btn trigger-popup">Launch App</button>
     </nav>
 
     <main>
         <section class="hero">
-            <span class="badge">INTELLIGENT ARCHITECTURE</span>
-            <h1>The next generation of digital infrastructure.</h1>
-            <p class="hero-desc">Experience lightning-fast data layer speeds tailored for modern, highly-scalable software frameworks. Designed for absolute control.</p>
-            <button class="nav-btn trigger-popup" style="padding: 0.8rem 2rem; font-size: 1rem; background: var(--accent); color: white;">Get Early Access</button>
+            <h1>The minimal data layer for digital architecture.</h1>
+            <p class="hero-desc">Experience absolute control. Purpose-built infrastructure designed for high-performance software systems.</p>
         </section>
 
         <section class="grid">
-            <div class="card card-large">
-                <h3>Sub-millisecond latency processing</h3>
-                <p>Our distributed consensus core reduces execution times across complex transaction graphs, establishing global state consistency without bottleneck structures.</p>
+            <div class="card">
+                <h3>01 / Execution</h3>
+                <p>Sub-millisecond latency pathways engineered to manage high-frequency operations instantly.</p>
             </div>
             <div class="card">
-                <h3>Encrypted Zero-Knowledge</h3>
-                <p>Prioritize user data privacy using advanced asymmetric infrastructure layers baked straight into the protocol level.</p>
+                <h3>02 / Privacy</h3>
+                <p>Zero-knowledge cryptographic logic foundationalized directly into the core systems structure.</p>
             </div>
             <div class="card">
-                <h3>Fluid UI Sync</h3>
-                <p>Native bindings for component frameworks ensure instantaneous views perfectly mirrors backend states.</p>
+                <h3>03 / Sync</h3>
+                <p>A unified data interface establishing real-time updates without additional middleware overhead.</p>
             </div>
-            <div class="card card-large">
-                <h3>Dynamic Resource Partitioning</h3>
-                <p>Isolate your high-throughput environments dynamically, allowing resource scaling spikes to execute cleanly without affecting regular operating margins.</p>
+            <div class="card">
+                <h3>04 / Isolation</h3>
+                <p>Dedicated processing sandboxes that secure core tasks against erratic operational spikes.</p>
             </div>
         </section>
     </main>
@@ -361,13 +268,12 @@
     <div class="modal-overlay" id="popupOverlay">
         <div class="modal">
             <button class="close-btn" id="closeBtn">&times;</button>
-            <span class="modal-tag">Project Status</span>
             <h2>Coming Soon</h2>
-            <p>We are currently operating in a closed-alpha environment. Drop your email below to receive priorities updates and secure your unique handle when public registration initiates.</p>
-            <form onsubmit="event.preventDefault(); alert('You\'re on the list!'); document.getElementById('popupOverlay').classList.remove('active');">
+            <p>The platform is undergoing initial deployments. Submit your email to request access to the subsequent release cycle.</p>
+            <form onsubmit="event.preventDefault(); alert('Saved.'); document.getElementById('popupOverlay').classList.remove('active');">
                 <div class="form-group">
-                    <input type="email" placeholder="name@domain.com" required>
-                    <button type="submit" class="submit-btn">Notify Me</button>
+                    <input type="email" placeholder="Email address" required>
+                    <button type="submit" class="submit-btn">Request Access</button>
                 </div>
             </form>
         </div>
@@ -378,32 +284,30 @@
         const closeBtn = document.getElementById('closeBtn');
         const triggers = document.querySelectorAll('.trigger-popup');
 
-        // Function to open popup
         const openPopup = (e) => {
             e.preventDefault();
             overlay.classList.add('active');
         };
 
-        // Function to close popup
         const closePopup = () => {
             overlay.classList.remove('active');
         };
 
-        // Event listeners
         triggers.forEach(trigger => trigger.addEventListener('click', openPopup));
         closeBtn.addEventListener('click', closePopup);
 
-        // Close on background click
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) closePopup();
         });
 
-        // Automatically trigger after a short delay to showcase the popup
+        // Prompt popup on load
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 overlay.classList.add('active');
-            }, 1200);
+            }, 1000);
         });
     </script>
 </body>
 </html>
+
+```
