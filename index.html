@@ -1,98 +1,924 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>booky V2</title>
-    <style>
-        /* Base Reset & Variables */
-        :root {
-            --bg: #000000;
-            --surface: #0a0a0a;
-            --border: #222222;
-            --text: #ffffff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>booky</title>
+  <style>
+    /* Reset & CSS Variables */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            font-weight: 700; /* Bold all text universally */
-        }
+    body {
+      background-color: #050505;
+      color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 1.5rem 6rem 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+    /* Subtle background grid pattern */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        /* Minimalist Rounded Popup */
-        .modal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            width: 90%;
-            max-width: 440px;
-            padding: 3.5rem;
-            border-radius: 24px; /* Significantly rounded edges */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-            text-align: center;
-        }
+    /* Top Right Floating Settings Cog Button */
+    .settings-btn {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
 
-        .modal h2 {
-            font-size: 2rem;
-            margin-bottom: 1.2rem;
-            letter-spacing: -0.5px;
-        }
+    .settings-btn:hover {
+      background: #ffffff;
+      color: #000000;
+      transform: rotate(30deg);
+      border-color: #ffffff;
+    }
 
-        .modal p {
-            color: var(--text);
-            font-size: 0.95rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.5;
-        }
+    .settings-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
-        /* Forms */
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+    /* Hero Header */
+    .hero {
+      text-align: center;
+      max-width: 650px;
+      margin-bottom: 3.5rem;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
 
-        .submit-btn {
-            background: var(--text);
-            color: var(--bg);
-            border: none;
-            padding: 1rem;
-            font-size: 0.95rem;
-            border-radius: 12px; /* Rounded button edges */
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+    }
 
-        .submit-btn:hover {
-            background: #e5e5e5;
-        }
-    </style>
+    .hero p {
+      font-size: 1.125rem;
+      color: #888888;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Category Filter Bar */
+    .filter-container {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.375rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 2.5rem;
+      z-index: 1;
+      backdrop-filter: blur(12px);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: #888888;
+      padding: 0.6rem 1.25rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      color: #ffffff;
+    }
+
+    .filter-btn.active {
+      background: #ffffff;
+      color: #000000;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Cards Grid */
+    .grid-container {
+      width: 100%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      z-index: 1;
+    }
+
+    .card {
+      background: rgba(20, 20, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      overflow: hidden;
+      margin-right: 0.5rem;
+    }
+
+    /* Full-color icon image support */
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .card-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* No filter applied so image stays full color! */
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-desc {
+      font-size: 0.8125rem;
+      color: #777777;
+      margin-top: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .open-btn {
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .open-btn:hover {
+      background: #e0e0e0;
+      transform: scale(1.03);
+    }
+
+    /* Modal / Window Component */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .window {
+      width: 100%;
+      max-width: 1000px;
+      height: 80vh;
+      background: #0a0a0a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.96);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .window {
+      transform: scale(1);
+    }
+
+    .window.fullscreen {
+      max-width: 100vw !important;
+      height: 100vh !important;
+      border-radius: 0 !important;
+      border: none !important;
+    }
+
+    /* Monochrome macOS Window Header Bar */
+    .window-header {
+      height: 42px;
+      background: #121212;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      user-select: none;
+    }
+
+    .window-title {
+      font-size: 0.85rem;
+      color: #888888;
+      font-weight: 500;
+    }
+
+    .mac-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mac-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.15s ease;
+      color: #000;
+    }
+
+    .mac-btn-close {
+      background: #333333;
+    }
+    .mac-btn-close:hover {
+      background: #ffffff;
+      border-color: #ffffff;
+    }
+
+    .mac-btn-fullscreen {
+      background: #222222;
+    }
+    .mac-btn-fullscreen:hover {
+      background: #888888;
+      border-color: #888888;
+    }
+
+    .mac-btn svg {
+      width: 8px;
+      height: 8px;
+      opacity: 0;
+      stroke: #000;
+      stroke-width: 2.5;
+    }
+
+    .mac-btn:hover svg {
+      opacity: 1;
+    }
+
+    /* Window Body & Loader */
+    .window-body {
+      flex: 1;
+      position: relative;
+      background: #000;
+    }
+
+    .window-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: #ffffff;
+    }
+
+    .iframe-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      transition: opacity 0.3s ease;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Settings Modal Panel */
+    .settings-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .settings-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .settings-card {
+      width: 100%;
+      max-width: 460px;
+      background: #0d0d0d;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .settings-close-btn {
+      background: transparent;
+      border: none;
+      color: #888888;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+
+    .settings-close-btn:hover {
+      color: #ffffff;
+    }
+
+    .settings-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .settings-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #aaaaaa;
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-input {
+      width: 100%;
+      background: #161616;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      color: #ffffff;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .settings-input:focus {
+      border-color: #ffffff;
+    }
+
+    .settings-action-btn {
+      width: 100%;
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .settings-action-btn:hover {
+      background: #e2e2e2;
+    }
+
+    .settings-secondary-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      margin-top: 0.5rem;
+    }
+
+    .settings-secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input-wrapper input[type="file"] {
+      display: none;
+    }
+
+    /* Fixed Bottom Left Version Watermark */
+    .version-tag {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #555555;
+      letter-spacing: 0.05em;
+      z-index: 50;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .version-tag::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffffff;
+      opacity: 0.4;
+    }
+
+    body.modal-open .version-tag {
+      opacity: 0;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="modal">
-        <h2>Coming Soon!</h2>
-        <p>There's nothing here... yet. Check back later even though there still probably wont be something</p>
-        <form onsubmit="event.preventDefault(); alert('Saved.');">
-            <div class="form-group">
-                <button type="submit" class="submit-btn">OK</button>
-            </div>
-        </form>
-    </div>
+  <!-- Top Right Settings Button -->
+  <button class="settings-btn" id="open-settings-btn" title="Settings" onclick="openSettingsModal()">
+    <svg viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+  </button>
 
+  <!-- Hero Title Section -->
+  <header class="hero">
+    <h1>booky</h1>
+    <p>powered by blankframe1</p>
+  </header>
+
+  <!-- Category Filter Controls -->
+  <nav class="filter-container">
+    <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+    <button class="filter-btn" onclick="filterCategory('games', this)">Games</button>
+    <button class="filter-btn" onclick="filterCategory('videos', this)">Videos</button>
+    <button class="filter-btn" onclick="filterCategory('other', this)">Other</button>
+  </nav>
+
+  <!-- Content Grid -->
+  <main class="grid-container" id="card-grid"></main>
+
+  <!-- Version Watermark -->
+  <div class="version-tag" id="version-tag">v2.3.1</div>
+
+  <!-- Modal Window Component -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="window" id="window-container">
+      <div class="window-header">
+        <span class="window-title" id="modal-window-title">Application Window</span>
+        <div class="mac-controls">
+          <button class="mac-btn mac-btn-fullscreen" onclick="toggleFullscreen()" title="Fullscreen">
+            <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+          </button>
+          <button class="mac-btn mac-btn-close" onclick="closeModal()" title="Close">
+            <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div class="iframe-loader" id="iframe-loader">
+          <div class="spinner"></div>
+        </div>
+        <iframe id="modal-iframe" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal Window -->
+  <div class="settings-modal-overlay" id="settings-modal-overlay">
+    <div class="settings-card">
+      <div class="settings-header">
+        <h2>Settings</h2>
+        <button class="settings-close-btn" onclick="closeSettingsModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="settings-group">
+        <button class="settings-action-btn" onclick="openAboutBlank()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+          Open in about:blank
+        </button>
+      </div>
+
+      <div class="settings-group">
+        <label class="settings-label" for="custom-title-input">Custom Page Title</label>
+        <input type="text" id="custom-title-input" class="settings-input" placeholder="e.g. My Dashboard" oninput="savePageTitle()">
+      </div>
+
+      <div class="settings-group">
+        <label class="settings-label">Custom Favicon</label>
+        <input type="text" id="custom-favicon-url" class="settings-input" placeholder="Icon URL (https://...)" onchange="saveFaviconFromUrl()" style="margin-bottom: 0.5rem;">
+        
+        <div class="file-input-wrapper">
+          <button class="settings-action-btn settings-secondary-btn" onclick="document.getElementById('favicon-file-input').click()">
+            Upload Image File
+          </button>
+          <input type="file" id="favicon-file-input" accept="image/*" onchange="handleFaviconFileUpload(event)">
+        </div>
+      </div>
+
+      <div class="settings-group" style="margin-top: 1.5rem;">
+        <button class="settings-action-btn settings-secondary-btn" onclick="resetSettings()" style="border-color: #444; color: #888;">
+          Reset Settings
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data Items List - Accepts direct Image URLs for icons!
+    var itemsData = [
+      {
+        id: "game-1",
+        title: "2048 Game",
+        desc: "Classic tile matching puzzle game",
+        category: "games",
+        url: "https://raw.githubusercontent.com/gabrielecirulli/2048/master/index.html",
+        iconUrl: "https://raw.githubusercontent.com/gabrielecirulli/2048/master/meta/apple-touch-icon.png"
+      },
+      {
+        id: "game-2",
+        title: "Minecraft",
+        desc: "Version 26.2. Cmon you know what this is!",
+        category: "games",
+        url: "hhttps://raw.githubusercontent.com/toasttheidiot/minecraftlatest/refs/heads/main/index.html",
+        iconUrl: "https://raw.githubusercontent.com/Hextris/hextris/master/images/icons/apple-touch-icon-120x120.png"
+      },
+      {
+        id: "video-1",
+        title: "Poketube",
+        desc: "YouTube with everything unblocked",
+        category: "videos",
+        url: "https://raw.githubusercontent.com/toasttheidiot/booky-assets/refs/heads/main/youtube.html",
+        iconUrl: "https://poketube.fun/favicon.ico"
+      },
+      {
+        id: "other-1",
+        title: "Turbowarp",
+        desc: "A mod of scratch",
+        category: "other",
+        url: "https://raw.githubusercontent.com/microsoft/monaco-editor/main/test/manual/index.html",
+        iconUrl: "https://raw.githubusercontent.com/microsoft/monaco-editor/main/docs/favicon.ico"
+      }
+    ];
+
+    // Card Grid Rendering Function
+    function renderCards(filter) {
+      if (!filter) filter = "all";
+      var grid = document.getElementById("card-grid");
+      grid.innerHTML = "";
+
+      var filtered = filter === "all" ? itemsData : itemsData.filter(function(item) {
+        return item.category === filter;
+      });
+
+      filtered.forEach(function(item) {
+        var card = document.createElement("div");
+        card.className = "card";
+        
+        // Use full color image URL if provided, fallback to standard default icon
+        var iconHtml = item.iconUrl 
+          ? '<img src="' + escapeHtml(item.iconUrl) + '" alt="icon" onerror="this.src=\'https://api.iconify.design/lucide:layout-grid.svg\'">'
+          : '<img src="https://api.iconify.design/lucide:layout-grid.svg" alt="icon">';
+
+        card.innerHTML = 
+          '<div class="card-left">' +
+            '<div class="card-icon">' + iconHtml + '</div>' +
+            '<div class="card-info">' +
+              '<div class="card-title">' + escapeHtml(item.title) + '</div>' +
+              '<div class="card-desc">' + escapeHtml(item.desc) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="open-btn" onclick="openModal(\'' + item.url + '\', \'' + escapeHtml(item.title) + '\')">Open</button>';
+        grid.appendChild(card);
+      });
+    }
+
+    // Category Filter Handler
+    function filterCategory(category, btnElement) {
+      var buttons = document.querySelectorAll(".filter-btn");
+      buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+      });
+      btnElement.classList.add("active");
+      renderCards(category);
+    }
+
+    // Process URLs to ensure HTML files execute instead of rendering as raw source text
+    function formatIframeUrl(targetUrl) {
+      // If it's a raw GitHub link or text file, fetch via CORS proxy so HTML renders cleanly
+      if (targetUrl.includes("raw.githubusercontent.com") || targetUrl.includes("github.com")) {
+        return "https://htmlpreview.github.io/?" + targetUrl;
+      }
+      return targetUrl;
+    }
+
+    // Window Modal Management
+    function openModal(url, title) {
+      var overlay = document.getElementById("modal-overlay");
+      var iframe = document.getElementById("modal-iframe");
+      var loader = document.getElementById("iframe-loader");
+      var titleElem = document.getElementById("modal-window-title");
+
+      titleElem.textContent = title;
+      loader.style.opacity = "1";
+      loader.style.pointerEvents = "auto";
+
+      iframe.src = formatIframeUrl(url);
+      overlay.classList.add("active");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeModal() {
+      var overlay = document.getElementById("modal-overlay");
+      var iframe = document.getElementById("modal-iframe");
+      var windowContainer = document.getElementById("window-container");
+
+      overlay.classList.remove("active");
+      document.body.classList.remove("modal-open");
+      windowContainer.classList.remove("fullscreen");
+
+      setTimeout(function() {
+        iframe.src = "about:blank";
+      }, 250);
+    }
+
+    function toggleFullscreen() {
+      var windowContainer = document.getElementById("window-container");
+      windowContainer.classList.toggle("fullscreen");
+    }
+
+    // Settings Modal Functions
+    function openSettingsModal() {
+      var overlay = document.getElementById("settings-modal-overlay");
+      overlay.classList.add("active");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeSettingsModal() {
+      var overlay = document.getElementById("settings-modal-overlay");
+      overlay.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    }
+
+    function openAboutBlank() {
+      var win = window.open("about:blank", "_blank");
+      if (!win) {
+        alert("Popup blocked! Please allow popups for this page.");
+        return;
+      }
+      var html = document.documentElement.outerHTML;
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+    }
+
+    function savePageTitle() {
+      var input = document.getElementById("custom-title-input").value.trim();
+      if (input) {
+        document.title = input;
+        localStorage.setItem("monochrome_title", input);
+      }
+    }
+
+    function setFavicon(url) {
+      var link = document.querySelector("link[rel*='icon']");
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "shortcut icon";
+        document.getElementsByTagName("head")[0].appendChild(link);
+      }
+      link.href = url;
+      localStorage.setItem("monochrome_favicon", url);
+    }
+
+    function saveFaviconFromUrl() {
+      var url = document.getElementById("custom-favicon-url").value.trim();
+      if (url) {
+        setFavicon(url);
+      }
+    }
+
+    function handleFaviconFileUpload(event) {
+      var file = event.target.files[0];
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          setFavicon(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function resetSettings() {
+      localStorage.removeItem("monochrome_title");
+      localStorage.removeItem("monochrome_favicon");
+      document.title = "Monochrome Hub";
+      document.getElementById("custom-title-input").value = "";
+      document.getElementById("custom-favicon-url").value = "";
+      var link = document.querySelector("link[rel*='icon']");
+      if (link) link.remove();
+    }
+
+    function loadSavedSettings() {
+      var savedTitle = localStorage.getItem("monochrome_title");
+      var savedFavicon = localStorage.getItem("monochrome_favicon");
+
+      if (savedTitle) {
+        document.title = savedTitle;
+        document.getElementById("custom-title-input").value = savedTitle;
+      }
+      if (savedFavicon) {
+        setFavicon(savedFavicon);
+        document.getElementById("custom-favicon-url").value = savedFavicon;
+      }
+    }
+
+    function setupIframeLoader() {
+      var iframe = document.getElementById("modal-iframe");
+      var loader = document.getElementById("iframe-loader");
+
+      iframe.addEventListener("load", function() {
+        loader.style.opacity = "0";
+        setTimeout(function() {
+          loader.style.pointerEvents = "none";
+        }, 300);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // Keyboard Close (Escape key)
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") {
+        closeModal();
+        closeSettingsModal();
+      }
+    });
+
+    // Initialize page
+    window.addEventListener("DOMContentLoaded", function() {
+      renderCards("all");
+      setupIframeLoader();
+      loadSavedSettings();
+    });
+  </script>
 </body>
 </html>
-
-```
